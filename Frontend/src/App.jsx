@@ -8,29 +8,31 @@ function App() {
     description: "",
   });
 
+  const API_URL = process.env.REACT_APP_API_URL;
+
   // Fetch all tasks
   const getTasks = async () => {
-    const res = await axios.get("http://localhost:5000/api/tasks");
+    const res = await axios.get(`${API_URL}/api/tasks`);
     setTasks(res.data);
   };
 
   // Create Task
   const createTask = async (e) => {
     e.preventDefault();
-    await axios.post("http://localhost:5000/api/tasks", form);
+    await axios.post(`${API_URL}/api/tasks`, form);
     setForm({ title: "", description: "" });
     getTasks();
   };
 
   // Delete Task
   const deleteTask = async (id) => {
-    await axios.delete(`http://localhost:5000/api/tasks/${id}`);
+    await axios.delete(`${API_URL}/api/tasks/${id}`);
     getTasks();
   };
 
-  // Toggle Pending/Completed — FIXED URL
+  // Toggle Pending/Completed
   const toggleStatus = async (task) => {
-    await axios.put(`http://localhost:5000/api/tasks/${task._id}`, {
+    await axios.put(`${API_URL}/api/tasks/${task._id}`, {
       status: task.status === "pending" ? "completed" : "pending",
     });
     getTasks();
