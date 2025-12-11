@@ -8,12 +8,19 @@ function App() {
     description: "",
   });
 
-  const API_URL = process.env.REACT_APP_API_URL;
+  // ✅ Vite environment variable (REACT_APP_ NOT ALLOWED)
+  const API_URL = import.meta.env.VITE_API_URL;
 
   // Fetch all tasks
   const getTasks = async () => {
-    const res = await axios.get(`${API_URL}/api/tasks`);
-    setTasks(res.data);
+    try {
+      const res = await axios.get(`${API_URL}/api/tasks`);
+      console.log("API Response:", res.data); // Debug
+      setTasks(res.data);
+    } catch (err) {
+      console.error("GET ERROR:", err);
+      setTasks([]); // Prevents map error
+    }
   };
 
   // Create Task
